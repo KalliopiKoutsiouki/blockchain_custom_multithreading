@@ -8,7 +8,6 @@ import com.warehouse.model.ProductDto;
 import com.warehouse.repository.BlockRepository;
 import com.warehouse.task.HashNonce;
 import com.warehouse.task.MineBlockTask;
-import com.warehouse.task.MineBlockTaskV3;
 import com.warehouse.utils.AppConstants;
 import com.warehouse.utils.DateFormatter;
 import com.warehouse.utils.InputValidator;
@@ -18,9 +17,6 @@ import org.springframework.stereotype.Service;
 import java.lang.reflect.Field;
 import java.util.*;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -154,7 +150,7 @@ public class BlockChainServiceImpl implements BlockChainService{
         for (int i = 0; i <= AppConstants.TARGET_VALUE && !resultFound.get(); i += AppConstants.INCREMENT_PER_THREAD) {
             int startNonce = i;
             int end = i + AppConstants.INCREMENT_PER_THREAD - 1;
-            MineBlockTaskV3 task = new MineBlockTaskV3(startNonce, end, previousHash, product);
+            MineBlockTask task = new MineBlockTask(startNonce, end, previousHash, product);
             Thread thread = new Thread(() -> {
                 try {
                         HashNonce result = task.mineBlock();
@@ -187,12 +183,6 @@ public class BlockChainServiceImpl implements BlockChainService{
             lock.unlock();
         }
         return hashNonce;
-    }
-
-    private static ExecutorService resetFlagAndStartExecutorService() {
-        BlockchainPrjApplication.SharedFlag.getInstance().setFlag(false);
-        ExecutorService executorService = Executors.newFixedThreadPool(AppConstants.NUM_THREADS);
-        return executorService;
     }
 
     private StringBuilder propertyQueryParam(String propertyName, String propertyValue) {

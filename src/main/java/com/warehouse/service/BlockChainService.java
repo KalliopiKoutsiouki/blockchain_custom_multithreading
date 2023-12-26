@@ -14,7 +14,6 @@ public interface BlockChainService {
 
     void saveAll(List<ProductDto> productDtos) throws Exception;
 
-
     List<ProductDto> getAll();
 
     List<ProductDto> findByProductProperty(String propertyName, String propertyValue) throws Exception;

@@ -7,11 +7,8 @@ import com.warehouse.utils.AppConstants;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.concurrent.Callable;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
 
-public class MineBlockTask implements Callable {
+public class MineBlockTask {
 
     private int startNonce;
     private int end;
@@ -29,8 +26,7 @@ public class MineBlockTask implements Callable {
 
     }
 
-    @Override
-    public HashNonce call() throws Exception {
+    public HashNonce mineBlock() throws Exception {
         String prefixString = new String(new char[AppConstants.PREFIX]).replace('\0', '0');
         while (!stopFlag.isFlagSet()) {
             if (startNonce > end) {
