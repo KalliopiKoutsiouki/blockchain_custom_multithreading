@@ -5,4 +5,5 @@ public class AppConstants {
     public static final int INCREMENT_PER_THREAD = 10000;
     public static final int NUM_THREADS = 3;
     public static final int PREFIX = 5;
+    public static int STARTING_COUNT = 0;
 }

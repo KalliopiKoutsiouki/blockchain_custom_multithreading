@@ -45,12 +45,14 @@ public class BlockChainServiceImpl implements BlockChainService{
      */
     @Override
     public void save(ProductDto product) throws Exception {
+        AppConstants.STARTING_COUNT = 0;
         product.validateProductDtoInput();
         try {
             ProductBlock productBlock = createProductBlock(product);
             if (productBlock!=null && productBlock.extractBlockDto().getHash() != null) {
                 blockRepository.save(productBlock);
             } else {
+                    AppConstants.STARTING_COUNT = AppConstants.TARGET_VALUE;
                     AppConstants.TARGET_VALUE += AppConstants.TARGET_VALUE;
                     save(product);
                 }
